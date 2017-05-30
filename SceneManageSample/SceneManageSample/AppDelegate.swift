@@ -7,12 +7,15 @@
 //
 
 import UIKit
+import Bond
+import ReactiveKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     var main:MainViewCtl!
+    var historyBtn: UIButton!
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -25,7 +28,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // set up scene controll
         SceneManager.shared.setUp(Scene.TopViewCtl.rawValue, viewCtl:main)
         
+        // history back btn for debug
+        historyBtn = UIButton()
+        
+        historyBtn.frame = CGRect(x: 10, y: 10, width: 150, height: 30)
+        historyBtn.tag = 0
+        historyBtn.backgroundColor = UIColor.red
+        historyBtn.setTitle("HISTORY BACK", for: .normal)
+        historyBtn.setTitleColor(UIColor.white, for: .normal)
+        historyBtn.addTarget(self, action: #selector(AppDelegate.onTouch(sender:)), for: .touchUpInside)
+        window!.addSubview(historyBtn)
+        historyBtn.isHidden = true
+        
+        // observe "SceneManager.shared.history" propery change and update history button visibility,
+        _ = SceneManager.shared.history.observeNext {
+            history in
+            print(">>>> history:\(history?.count)")
+            self.historyBtn.isHidden = (history?.count)! <= 0
+        }
+        
         return true
+    }
+    
+    internal func onTouch(sender: UIButton) {
+        SceneManager.shared.historyBack()
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

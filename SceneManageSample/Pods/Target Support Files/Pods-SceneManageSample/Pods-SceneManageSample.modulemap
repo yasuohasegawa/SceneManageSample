@@ -1,0 +1,6 @@
+framework module Pods_SceneManageSample {
+  umbrella header "Pods-SceneManageSample-umbrella.h"
+
+  export *
+  module * { export * }
+}

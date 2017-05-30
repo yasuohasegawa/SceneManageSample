@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import Bond
+import ReactiveKit
 
 final class SceneManager {
     private init() {}
@@ -18,13 +20,13 @@ final class SceneManager {
     private var currentScene:String?
     private var prevScene:String? = ""
     
-    // TODO:history back
+    private let HISTORY_STACK_LEVEL = 10
+    var history = Observable<[HistoryModel]?>([])
     
     public func setUp(_ className: String, viewCtl:MainViewCtl) {
         main = viewCtl
         uiview = getUIViewCtl(className)
         currentScene = className;
-        prevScene = className;
         main?.present(uiview!, animated: false, completion: {
         })
     }
@@ -44,12 +46,27 @@ final class SceneManager {
     }
     
     // managing scene change
-    public func sceneChange(_ className: String, params:Any..., isAnimate:Bool = true) {
+    public func sceneChange(_ className: String, params:Any..., isAnimate:Bool = true, isHistoryStack:Bool = true) {
         var baseView:BaseViewCtl? = self.uiview as? BaseViewCtl
         baseView!.onExit()
         
         if prevScene != currentScene {
             prevScene = currentScene;
+            
+            if isHistoryStack {
+                let historyNum = (history.value?.count)!
+                if historyNum <= HISTORY_STACK_LEVEL {
+                    if historyNum == HISTORY_STACK_LEVEL {
+                        history.value?.remove(at: historyNum-1)
+                    }
+                    
+                    let historyModel = HistoryModel()
+                    historyModel.scene = prevScene
+                    historyModel.params = params
+                    historyModel.isAnimate = isAnimate
+                    history.value?.insert(historyModel, at: 0)
+                }
+            }
         }
         
         currentScene = className;
@@ -80,6 +97,11 @@ final class SceneManager {
     
     public func prevScene(params:Any..., isAnimate:Bool = true) {
         sceneChange(prevScene!, params: params, isAnimate)
+    }
+    
+    public func historyBack() {
+        let historyModel = history.value?.remove(at: 0)
+        sceneChange((historyModel?.scene)!, params: historyModel?.params, historyModel?.isAnimate, isHistoryStack: false)
     }
 }
 

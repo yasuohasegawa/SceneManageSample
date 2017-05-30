@@ -1,0 +1,28 @@
+PODS:
+  - Bond (5.4.0):
+    - Diff (~> 0.4)
+    - ReactiveKit (~> 3.1.2)
+  - Diff (0.5.3)
+  - ReactiveKit (3.1.2)
+
+DEPENDENCIES:
+  - Bond (from `https://github.com/SwiftBond/Bond.git`, tag `v5.4.0`)
+
+EXTERNAL SOURCES:
+  Bond:
+    :git: https://github.com/SwiftBond/Bond.git
+    :tag: v5.4.0
+
+CHECKOUT OPTIONS:
+  Bond:
+    :git: https://github.com/SwiftBond/Bond.git
+    :tag: v5.4.0
+
+SPEC CHECKSUMS:
+  Bond: e64b4a7fc66ab8937e805e7e2d0f229c3e27f668
+  Diff: befa1d19c32726b2b36ce915d98793e2fbde8dcc
+  ReactiveKit: fcd80a87ac9548f11dc33ace1042022c9eb7d01c
+
+PODFILE CHECKSUM: cbf6d4589f8d8342abada037813e231f5faa2b03
+
+COCOAPODS: 1.0.1
