@@ -24,7 +24,6 @@ final class SceneManager {
         main = viewCtl
         uiview = getUIViewCtl(className)
         currentScene = className;
-        prevScene = className;
         main?.present(uiview!, animated: false, completion: {
         })
     }
