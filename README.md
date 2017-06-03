@@ -8,5 +8,4 @@ This sample is simple code base scene management using UIViewController for swif
 3. Insert "SceneManager.sceneChange()" method to button action, and you can also use "SceneManager.prevScene()" to back to
 previous view.
 
-
-
+In sample2 branch, there is "history back" sample with swift bond.
